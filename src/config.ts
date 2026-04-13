@@ -32,6 +32,55 @@ Do NOT use for phone validation -- use phone_validate_number instead. Do NOT use
         },
         required: ["address"],
       },
+      outputSchema: {
+          "type": "object",
+          "properties": {
+            "valid": {
+              "type": "boolean",
+              "description": "Whether the address is valid"
+            },
+            "formatted": {
+              "type": "string",
+              "description": "Normalized formatted address"
+            },
+            "components": {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "postalCode": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                }
+              }
+            },
+            "confidence": {
+              "type": "number",
+              "description": "Confidence score 0-100"
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Validation issues found"
+            }
+          },
+          "required": [
+            "valid",
+            "formatted",
+            "confidence"
+          ]
+        },
     },
   ],
 };
