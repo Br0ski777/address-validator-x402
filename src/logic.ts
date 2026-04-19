@@ -1,5 +1,20 @@
 import type { Hono } from "hono";
 
+
+// ATXP: requirePayment only fires inside an ATXP context (set by atxpHono middleware).
+// For raw x402 requests, the existing @x402/hono middleware handles the gate.
+// If neither protocol is active (ATXP_CONNECTION unset), tryRequirePayment is a no-op.
+async function tryRequirePayment(price: number): Promise<void> {
+  if (!process.env.ATXP_CONNECTION) return;
+  try {
+    const { requirePayment } = await import("@atxp/server");
+    const BigNumber = (await import("bignumber.js")).default;
+    await requirePayment({ price: BigNumber(price) });
+  } catch (e: any) {
+    if (e?.code === -30402) throw e;
+  }
+}
+
 interface AddressComponents {
   street: string | null;
   city: string | null;
@@ -205,6 +220,7 @@ function parseAddress(address: string): { components: AddressComponents; country
 
 export function registerRoutes(app: Hono) {
   app.post("/api/validate", async (c) => {
+    await tryRequirePayment(0.003);
     const body = await c.req.json().catch(() => null);
     if (!body || !body.address) return c.json({ error: "Missing required field: address" }, 400);
     if (typeof body.address !== "string") return c.json({ error: "Field 'address' must be a string" }, 400);
