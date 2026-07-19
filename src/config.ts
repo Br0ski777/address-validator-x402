@@ -9,7 +9,7 @@ export const API_CONFIG: ApiConfig = {
     {
       method: "POST",
       path: "/api/validate",
-      price: "$0.003",
+      price: "$0.008",
       description: "Parse, validate, and normalize a postal address",
       toolName: "address_validate",
       toolDescription:
