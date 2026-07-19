@@ -37,7 +37,7 @@ Any x402-aware client ([`@x402/fetch`](https://www.npmjs.com/package/@x402/fetch
 
 | Tool | Method | Path | Price | Description |
 |---|---|---|---|---|
-| `address_validate` | POST | `/api/validate` | $0.003 | Parse, validate, and normalize a postal address |
+| `address_validate` | POST | `/api/validate` | $0.008 | Parse, validate, and normalize a postal address |
 
 ### `address_validate`
 
